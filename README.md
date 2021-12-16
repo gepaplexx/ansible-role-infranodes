@@ -6,14 +6,7 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/gepaplexx/ansible-role-infranodes?style=flat-square)
 ![Maintenance](https://img.shields.io/maintenance/yes/2022?style=flat-square)
 
-Automatically approving CSR from new openshift nodes. Also installing oc if not present.
-
-## Role Variables
-
-Variable Name | Default Value | Description
------------- | ------------- | -------------
-openshift_mirror_url | https://openshift.infra.gepaplexx.com | Openshift Mirror URL
-csr_autoapprove_oc_binary_url | {{ openshift_mirror_url }}/clients/oc/latest/linux/oc.tar.gz | URL to OC archive
+Manage Infrastructure Nodes on OpenShift. Label them correctly, apply taints and patch resources
 
 ## Role Usage Examples
 
