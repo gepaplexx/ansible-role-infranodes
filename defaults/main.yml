@@ -3,4 +3,6 @@
 openshift_kubeconfig_file: /home/ansible/openshift/config/auth/kubeconfig
 
 infranodes_label: node-role.kubernetes.io/infra=""
+infranodes_taint: "infra=reserved:NoSchedule infra=reserved:NoExecute"
+infranodes_label_selector: "node-role.kubernetes.io/infra"
 ...
