@@ -1,0 +1,6 @@
+---
+# skip_ansible_lint
+openshift_kubeconfig_file: /home/ansible/openshift/config/auth/kubeconfig
+
+infranodes_label: node-role.kubernetes.io/infra=""
+...

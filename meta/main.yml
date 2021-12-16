@@ -1,0 +1,19 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: infranodes
+  author: Felix Hochleitner
+  namespace: gepaplexx
+  description: Ansible Role to configure openshift infrastructure nodes
+  license: MIT
+  min_ansible_version: "2.10"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+  galaxy_tags:
+    - k8s
+    - kubernetes
+    - openshift
+...
