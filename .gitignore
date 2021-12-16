@@ -1,0 +1,5 @@
+*.retry
+.env
+**/.DS_Store
+*.iml
+.idea/
