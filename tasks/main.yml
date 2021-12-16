@@ -1,5 +1,5 @@
 ---
-# https://access.redhat.com/solutions/5034771
+  # https://access.redhat.com/solutions/5034771
 - name: label infrastructure nodes
   environment:
     LABEL: "{{ infranodes_label }}"
