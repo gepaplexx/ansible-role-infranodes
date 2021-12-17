@@ -1,22 +1,26 @@
 ---
 # https://access.redhat.com/solutions/5034771
 - name: label infrastructure nodes
-  ansible.builtin.command:
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+    LABEL: "{{ infranodes_label }}"
+  ansible.builtin.shell:
     cmd: |
-      kubectl label nodes --kubeconfig { openshift_kubeconfig_file }} \
-        $(kubectl get nodes --no-headers \
-        -o jsonpath='{range .items[*]}{.metadata.name}{\"\n\"}{end}' \
-        | grep infra) {{ infranodes_label }}
-    register: labeloutput
-    changed_when: "'already has a value' not in labeloutput.stdout"
-    failed_when: "'error' in labloutput.stdout"
+      kubectl label nodes $(kubectl get nodes --no-headers \
+      -o jsonpath='{range .items[*]}{.metadata.name}{\"\n\"}{end}' \
+      | grep infra) ${LABEL}
+  register: infranodes_labeloutput
+  changed_when: '"already has a value" not in infranodes_labeloutput.stdout'
+  failed_when: '"error" in infranodes_labloutput.stdout'
 
 - name: taint infrastructure nodes
-  ansible.builtin.command:
-    cmd: |
-      kubectl taint nodes --kubeconfig {{ openshift_kubeconfig_file }} \
-        -l {{ infranodes_label_selector }} {{ infranodes_taint }}
-    register: taintoutput
-    changed_when: "'--overwrite is false' not in labeloutput.stdout"
-    failed_when: false
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+    SELECTOR: "{{ infranodes_label_selector }}"
+    TAINT: "{{ infranodes_taint }}"
+  ansible.builtin.shell:
+    cmd: kubectl taint nodes -l ${SELECTOR} ${TAINT}
+  register: infranodes_taintoutput
+  changed_when: '"--overwrite is false" not in infranodes_taintoutput.stdout'
+  failed_when: false
 ...
