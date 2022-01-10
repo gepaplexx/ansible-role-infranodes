@@ -38,17 +38,15 @@
                     - openshift-image-registry
                   topologyKey: kubernetes.io/hostname
                 weight: 100
-        nodePlacement:
-          nodeSelector:
-            matchLabels:
-              node-role.kubernetes.io/infra: ""
-          tolerations:
-            - effect: NoSchedule
-              key: infra
-              value: reserved
-            - effect: NoExecute
-              key: infra
-              value: reserved
+        nodeSelector:
+          node-role.kubernetes.io/infra: ""
+        tolerations:
+          - effect: NoSchedule
+            key: infra
+            value: reserved
+          - effect: NoExecute
+            key: infra
+            value: reserved
 
 - name: "Patch Monitoring"
   k8s:
@@ -150,4 +148,6 @@
   register: infranodes_annotate_output
   changed_when: '"namespace/openshift-logging annotated" in infranodes_annotate_output.stdout'
   failed_when: '"error" in infranodes_annotate_output.stdout'
+
+  # TODO: patch openshift-gitops | write molecule tests
 ...
