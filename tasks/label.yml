@@ -1,0 +1,39 @@
+---
+# https://access.redhat.com/solutions/5034771
+- name: add infrastructure role label to infra nodes
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+    LABEL: "{{ infranodes_label }}"
+  ansible.builtin.shell:
+    cmd: |
+      kubectl label nodes $(kubectl get nodes --no-headers \
+      -o jsonpath='{range .items[*]}{.metadata.name}{\"\n\"}{end}' \
+      | grep infra) ${LABEL}
+  register: infranodes_labeloutput
+  changed_when: '"already has a value" not in infranodes_labeloutput.stdout'
+  failed_when: '"error" in infranodes_labloutput.stdout'
+
+- name: add app role label to worker nodes
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+    LABEL: "{{ app_label }}"
+  ansible.builtin.shell:
+    cmd: |
+      kubectl label nodes $(kubectl get nodes --no-headers \
+      -o jsonpath='{range .items[*]}{.metadata.name}{\"\n\"}{end}' \
+      | grep worker) ${LABEL}
+  register: infranodes_app_label_output
+  changed_when: '"already has a value" not in infranodes_app_label_output.stdout'
+  failed_when: '"error" in infranodes_app_label_output.stdout'
+
+- name: taint infrastructure nodes
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+    SELECTOR: "{{ infranodes_label_selector }}"
+    TAINT: "{{ infranodes_taint }}"
+  ansible.builtin.shell:
+    cmd: kubectl taint nodes -l ${SELECTOR} ${TAINT}
+  register: infranodes_taintoutput
+  changed_when: '"--overwrite is false" not in infranodes_taintoutput.stdout'
+  failed_when: false
+...
