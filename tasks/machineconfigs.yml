@@ -1,6 +1,6 @@
 ---
 - name: "create infrastructure MachineConfigPool"
-  k8s:
+  community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
     definition:
       apiVersion: machineconfiguration.openshift.io/v1
@@ -20,7 +20,7 @@
             node-role.kubernetes.io/infra: ""
 
 - name: "create infrastructure machine config"
-  k8s:
+  community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
     definition:
       apiVersion: machineconfiguration.openshift.io/v1

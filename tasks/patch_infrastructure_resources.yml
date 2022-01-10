@@ -1,12 +1,13 @@
 ---
 - name: "Patch default IngressController"
-  k8s:
+  community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
     definition:
       apiVersion: operator.openshift.io/v1
       kind: IngressController
       metadata:
         name: default
+        namespace: openshift-ingress-operator
       spec:
         replicas: "{{ ocp_infra_count }}"
         nodePlacement:
@@ -22,13 +23,13 @@
               value: reserved
 
 - name: "Patch ImageRegistry"
-  k8s:
+  community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
     definition:
       apiVersion: imageregistry.operator.openshift.io/v1
       kind: Config
       metadata:
-        name: default
+        name: cluster
       spec:
         affinity:
           podAntiAffinity:
@@ -49,7 +50,7 @@
             value: reserved
 
 - name: "Patch Monitoring"
-  k8s:
+  community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
     definition:
       apiVersion: v1
@@ -147,7 +148,7 @@
     cmd: "kubectl annotate ns openshift-logging openshift.io/node-selector="
   register: infranodes_annotate
   changed_when: '"openshift-logging annotated" in infranodes_annotate.stdout'
-  failed_when: '"error" in infranodes_annotate_output.stdout'
+  failed_when: '"error" in infranodes_annotate.stdout'
 
   # TODO: patch openshift-gitops | write molecule tests
 ...
