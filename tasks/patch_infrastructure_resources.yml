@@ -145,9 +145,8 @@
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.command:
     cmd: "kubectl annotate ns openshift-logging openshift.io/node-selector="
-  register: infranodes_annotate_output
-  changed_when: |-
-  '"namespace/openshift-logging annotated" in infranodes_annotate_output.stdout'
+  register: infranodes_annotate
+  changed_when: '"openshift-logging annotated" in infranodes_annotate.stdout'
   failed_when: '"error" in infranodes_annotate_output.stdout'
 
   # TODO: patch openshift-gitops | write molecule tests

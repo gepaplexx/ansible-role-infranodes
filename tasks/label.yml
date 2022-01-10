@@ -22,9 +22,8 @@
       kubectl label nodes $(kubectl get nodes --no-headers \
       -o jsonpath='{range .items[*]}{.metadata.name}{\"\n\"}{end}' \
       | grep worker) ${LABEL}
-  register: infranodes_app_label_output
-  changed_when: |-
-  '"already has a value" not in infranodes_app_label_output.stdout'
+  register: infranodes_app
+  changed_when: '"already has a value" not in infranodes_app.stdout'
   failed_when: '"error" in infranodes_app_label_output.stdout'
 
 - name: taint infrastructure nodes
