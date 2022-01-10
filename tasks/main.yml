@@ -1,26 +1,13 @@
 ---
-# https://access.redhat.com/solutions/5034771
-- name: label infrastructure nodes
-  environment:
-    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
-    LABEL: "{{ infranodes_label }}"
-  ansible.builtin.shell:
-    cmd: |
-      kubectl label nodes $(kubectl get nodes --no-headers \
-      -o jsonpath='{range .items[*]}{.metadata.name}{\"\n\"}{end}' \
-      | grep infra) ${LABEL}
-  register: infranodes_labeloutput
-  changed_when: '"already has a value" not in infranodes_labeloutput.stdout'
-  failed_when: '"error" in infranodes_labloutput.stdout'
+- name: apply labels to nodes
+  include_tasks: label.yml
 
-- name: taint infrastructure nodes
-  environment:
-    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
-    SELECTOR: "{{ infranodes_label_selector }}"
-    TAINT: "{{ infranodes_taint }}"
-  ansible.builtin.shell:
-    cmd: kubectl taint nodes -l ${SELECTOR} ${TAINT}
-  register: infranodes_taintoutput
-  changed_when: '"--overwrite is false" not in infranodes_taintoutput.stdout'
-  failed_when: false
+- name: create MachineConfigPool & MachineConfig
+  include_tasks: machineconfigs.yml
+
+- name: define defaultNodeSelector
+  include_tasks: scheduler.yml
+
+- name: move workload to infra nodes
+  include_tasks: patch_infrastructure_resources.yml
 ...

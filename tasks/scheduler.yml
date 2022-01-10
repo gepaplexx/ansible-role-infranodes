@@ -1,0 +1,12 @@
+---
+- name: "Add defaultNodeSelector to cluster scheduler"
+  k8s:
+    kubeconfig: "{{ openshift_kubeconfig_file }}"
+    definition:
+      apiVersion: config.openshift.io/v1
+      kind: Scheduler
+      metadata:
+        name: cluster
+      spec:
+        defaultNodeSelector: "{{ infranodes_worker_label }}"
+...

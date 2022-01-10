@@ -1,0 +1,153 @@
+---
+- name: "Patch default IngressController"
+  k8s:
+    kubeconfig: "{{ openshift_kubeconfig_file }}"
+    definition:
+      apiVersion: operator.openshift.io/v1
+      kind: IngressController
+      metadata:
+        name: default
+      spec:
+        replicas: "{{ ocp_infra_count }}"
+        nodePlacement:
+          nodeSelector:
+            matchLabels:
+              node-role.kubernetes.io/infra: ""
+          tolerations:
+            - effect: NoSchedule
+              key: infra
+              value: reserved
+            - effect: NoExecute
+              key: infra
+              value: reserved
+
+- name: "Patch ImageRegistry"
+  k8s:
+    kubeconfig: "{{ openshift_kubeconfig_file }}"
+    definition:
+      apiVersion: imageregistry.operator.openshift.io/v1
+      kind: Config
+      metadata:
+        name: default
+      spec:
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - podAffinityTerm:
+                  namespaces:
+                    - openshift-image-registry
+                  topologyKey: kubernetes.io/hostname
+                weight: 100
+        nodePlacement:
+          nodeSelector:
+            matchLabels:
+              node-role.kubernetes.io/infra: ""
+          tolerations:
+            - effect: NoSchedule
+              key: infra
+              value: reserved
+            - effect: NoExecute
+              key: infra
+              value: reserved
+
+- name: "Patch Monitoring"
+  k8s:
+    kubeconfig: "{{ openshift_kubeconfig_file }}"
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: cluster-monitoring-config
+        namespace: openshift-monitoring
+      data:
+        config.yaml: |+
+          alertmanagerMain:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: infra
+              value: reserved
+              effect: NoSchedule
+            - key: infra
+              value: reserved
+              effect: NoExecute
+          prometheusK8s:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: infra
+              value: reserved
+              effect: NoSchedule
+            - key: infra
+              value: reserved
+              effect: NoExecute
+          prometheusOperator:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: infra
+              value: reserved
+              effect: NoSchedule
+            - key: infra
+              value: reserved
+              effect: NoExecute
+          grafana:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: infra
+              value: reserved
+              effect: NoSchedule
+            - key: infra
+              value: reserved
+              effect: NoExecute
+          k8sPrometheusAdapter:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: infra
+              value: reserved
+              effect: NoSchedule
+            - key: infra
+              value: reserved
+              effect: NoExecute
+          kubeStateMetrics:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: infra
+              value: reserved
+              effect: NoSchedule
+            - key: infra
+              value: reserved
+              effect: NoExecute
+          telemeterClient:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: infra
+              value: reserved
+              effect: NoSchedule
+            - key: infra
+              value: reserved
+              effect: NoExecute
+          openshiftStateMetrics:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+            - key: infra
+              value: reserved
+              effect: NoSchedule
+            - key: infra
+              value: reserved
+              effect: NoExecute
+
+- name: "Annotate openshift-logging correctly"
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+  ansible.builtin.command:
+    cmd: "kubectl annotate ns openshift-logging openshift.io/node-selector="
+  register: infranodes_annotate_output
+  changed_when: '"namespace/openshift-logging annotated" in infranodes_annotate_output.stdout'
+  failed_when: '"error" in infranodes_annotate_output.stdout'
+...
