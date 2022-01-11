@@ -5,3 +5,4 @@ molecule
 molecule-docker
 pre-commit
 yamllint
+openshift
