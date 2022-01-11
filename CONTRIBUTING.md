@@ -60,7 +60,7 @@ Now that you're a part of the racqspace community, you can keep participating in
   - [Suggested changes](#suggested-changes)
 
 ## Types of contributions :memo:
-You can contribute in several ways. This repo is a place to discuss and collaborate on the ansible role racqspace.csr_autoapprove! Our small, but mighty :muscle: racqspace team is maintaining this repo. To preserve our bandwidth, off topic conversations will be closed.
+You can contribute in several ways. This repository is a place to discuss and collaborate on the ansible role racqspace.csr_autoapprove! Our small, but mighty :muscle: racqspace team is maintaining this repository. To preserve our bandwidth, off topic conversations will be closed.
 
 ### :mega: Discussions
 Discussions are where we have conversations.
@@ -70,12 +70,12 @@ If you'd like help troubleshooting a PR you're working on, have a great new idea
 ### :beetle: Issues
 [Issues](https://docs.github.com/en/github/managing-your-work-on-github/about-issues) are used to track tasks that contributors can help with. If an issue has a triage label, we haven't reviewed it yet and you shouldn't begin work on it.
 
-If you've found something in the repo that should be updated, search open issues to see if someone else has reported the same thing. If it's something new, open an issue. We'll use the issue to have a conversation about the problem you want to fix.
+If you've found something in the repository that should be updated, search open issues to see if someone else has reported the same thing. If it's something new, open an issue. We'll use the issue to have a conversation about the problem you want to fix.
 
 ### :hammer_and_wrench: Pull requests
 A [pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests) is a way to suggest changes in our repository.
 
-When we merge those changes, they should be available in ansible galaxy within 24 hours. :earth_africa: To learn more about opening a pull request in this repo, see [Opening a pull request](#opening-a-pull-request) below.
+When we merge those changes, they should be available in ansible galaxy within 24 hours. :earth_africa: To learn more about opening a pull request in this repository, see [Opening a pull request](#opening-a-pull-request) below.
 
 ## Starting with an issue
 You can browse existing issues to find something that needs help!

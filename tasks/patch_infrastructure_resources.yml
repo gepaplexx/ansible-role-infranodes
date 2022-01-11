@@ -1,14 +1,16 @@
 ---
 - name: "Patch default IngressController"
-  k8s:
+  community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: patched
     definition:
       apiVersion: operator.openshift.io/v1
       kind: IngressController
       metadata:
         name: default
+        namespace: openshift-ingress-operator
       spec:
-        replicas: "{{ ocp_infra_count }}"
+        replicas: "{{ ocp_infra_count|int }}"
         nodePlacement:
           nodeSelector:
             matchLabels:
@@ -20,15 +22,21 @@
             - effect: NoExecute
               key: infra
               value: reserved
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.router
+    - molecule-notest
 
 - name: "Patch ImageRegistry"
-  k8s:
+  community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: patched
     definition:
       apiVersion: imageregistry.operator.openshift.io/v1
       kind: Config
       metadata:
-        name: default
+        name: cluster
       spec:
         affinity:
           podAntiAffinity:
@@ -47,10 +55,16 @@
           - effect: NoExecute
             key: infra
             value: reserved
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.registry
+    - molecule-notest
 
 - name: "Patch Monitoring"
-  k8s:
+  community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: present
     definition:
       apiVersion: v1
       kind: ConfigMap
@@ -139,15 +153,24 @@
             - key: infra
               value: reserved
               effect: NoExecute
+    tags:
+      - infranodes
+      - infranodes.ocp
+      - infranodes.monitoring
 
 - name: "Annotate openshift-logging correctly"
   environment:
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.command:
     cmd: "kubectl annotate ns openshift-logging openshift.io/node-selector="
-  register: infranodes_annotate_output
-  changed_when: '"namespace/openshift-logging annotated" in infranodes_annotate_output.stdout'
-  failed_when: '"error" in infranodes_annotate_output.stdout'
+  register: infranodes_annotate
+  changed_when: '"openshift-logging annotated" in infranodes_annotate.stdout'
+  failed_when: '"error" in infranodes_annotate.stdout'
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.logging
+    - molecule-notest
 
   # TODO: patch openshift-gitops | write molecule tests
 ...

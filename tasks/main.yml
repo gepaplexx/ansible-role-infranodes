@@ -4,10 +4,19 @@
 
 - name: create MachineConfigPool & MachineConfig
   include_tasks: machineconfigs.yml
+  tags:
+    - infranodes
+    - infranodes.ocp
 
 - name: define defaultNodeSelector
   include_tasks: scheduler.yml
+  tags:
+    - infranodes
+    - infranodes.ocp
 
 - name: move workload to infra nodes
   include_tasks: patch_infrastructure_resources.yml
+  tags:
+    - infranodes
+    - infranodes.ocp
 ...
