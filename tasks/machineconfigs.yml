@@ -2,6 +2,7 @@
 - name: "create infrastructure MachineConfigPool"
   community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: patched
     definition:
       apiVersion: machineconfiguration.openshift.io/v1
       kind: MachineConfigPool
@@ -18,10 +19,16 @@
         nodeSelector:
           matchLabels:
             node-role.kubernetes.io/infra: ""
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.machineconfig
+    - molecule-notest
 
 - name: "create infrastructure machine config"
   community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: patched
     definition:
       apiVersion: machineconfiguration.openshift.io/v1
       kind: MachineConfig
@@ -33,5 +40,10 @@
         config:
           ignition:
             version: 3.2.0
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.machineconfig
+    - molecule-notest
 
 ...

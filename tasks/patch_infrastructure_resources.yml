@@ -2,6 +2,7 @@
 - name: "Patch default IngressController"
   community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: patched
     definition:
       apiVersion: operator.openshift.io/v1
       kind: IngressController
@@ -21,10 +22,16 @@
             - effect: NoExecute
               key: infra
               value: reserved
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.router
+    - molecule-notest
 
 - name: "Patch ImageRegistry"
   community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: patched
     definition:
       apiVersion: imageregistry.operator.openshift.io/v1
       kind: Config
@@ -48,10 +55,16 @@
           - effect: NoExecute
             key: infra
             value: reserved
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.registry
+    - molecule-notest
 
 - name: "Patch Monitoring"
   community.kubernetes.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: present
     definition:
       apiVersion: v1
       kind: ConfigMap
@@ -140,6 +153,10 @@
             - key: infra
               value: reserved
               effect: NoExecute
+    tags:
+      - infranodes
+      - infranodes.ocp
+      - infranodes.monitoring
 
 - name: "Annotate openshift-logging correctly"
   environment:
@@ -149,6 +166,11 @@
   register: infranodes_annotate
   changed_when: '"openshift-logging annotated" in infranodes_annotate.stdout'
   failed_when: '"error" in infranodes_annotate.stdout'
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.logging
+    - molecule-notest
 
   # TODO: patch openshift-gitops | write molecule tests
 ...

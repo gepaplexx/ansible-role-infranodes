@@ -12,6 +12,10 @@
   register: infranodes_labeloutput
   changed_when: '"already has a value" not in infranodes_labeloutput.stdout'
   failed_when: '"error" in infranodes_labeloutput.stdout'
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.label
 
 - name: add app role label to worker nodes
   environment:
@@ -36,4 +40,8 @@
   register: infranodes_taintoutput
   changed_when: '"--overwrite is false" not in infranodes_taintoutput.stdout'
   failed_when: false
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.label
 ...
