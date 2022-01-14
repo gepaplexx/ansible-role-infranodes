@@ -106,6 +106,7 @@ jobs:
       - pre-commit
       - super-linter
       - yaml-linter
+      - molecule
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2

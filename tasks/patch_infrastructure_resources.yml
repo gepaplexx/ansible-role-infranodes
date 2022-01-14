@@ -1,6 +1,6 @@
 ---
 - name: "Patch default IngressController"
-  community.kubernetes.k8s:
+  kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
     state: patched
     definition:
@@ -29,7 +29,7 @@
     - molecule-notest
 
 - name: "Patch ImageRegistry"
-  community.kubernetes.k8s:
+  kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
     state: patched
     definition:
@@ -62,7 +62,7 @@
     - molecule-notest
 
 - name: "Patch Monitoring"
-  community.kubernetes.k8s:
+  kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
     state: present
     definition:
