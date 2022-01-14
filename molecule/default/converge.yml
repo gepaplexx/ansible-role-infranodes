@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: infranodes-controlplane
+  connection: docker
+  gather_facts: false
+  roles:
+    - role: gepaplexx.infranodes
+...
