@@ -89,8 +89,8 @@ jobs:
       - name: Install Molecule Dependencies
         run: pip install -r requirements.txt
 
-     - name: Install ansible Dependencies
-       run: ansible-galaxy role install -r collections/requirements.yml
+      - name: Install ansible Dependencies
+        run: ansible-galaxy role install -r collections/requirements.yml
 
       - name: Run Molecule Tests
         run: molecule test --all
