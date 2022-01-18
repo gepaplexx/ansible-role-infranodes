@@ -1,0 +1,36 @@
+---
+- name: Prepare
+  hosts: instance
+  connection: docker
+  gather_facts: false
+
+  tasks:
+  - name: update apt
+    ansible.builtin.apt:
+      update_cache: true
+
+  - name: install dependencies
+    ansible.builtin.apt:
+      name:
+        - python3
+        - python3-pip
+        - python3-setuptools
+        - curl
+
+  - name: download kubectl
+    ansible.builtin.command:
+      # yamllint disable-line rule:line-length
+      cmd: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+  - name: install kubectl
+    ansible.builtin.command:
+      cmd: install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+  - name: Make kubectl executable
+    ansible.builtin.command:
+      cmd: chmod +x kubectl
+
+  - name: install pip requirements
+    ansible.builtin.pip:
+      name:
+        - openshift

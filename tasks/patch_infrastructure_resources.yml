@@ -10,7 +10,6 @@
         name: default
         namespace: openshift-ingress-operator
       spec:
-        replicas: "{{ ocp_infra_count|int }}"
         nodePlacement:
           nodeSelector:
             matchLabels:
@@ -172,5 +171,5 @@
     - infranodes.logging
     - molecule-notest
 
-  # TODO: patch openshift-gitops | write molecule tests
+  # TODO: patch openshift-gitops | write molecule tests | authentication server
 ...

@@ -1,6 +1,6 @@
 ---
 - name: Converge
-  hosts: infranodes-controlplane
+  hosts: instance
   connection: docker
   gather_facts: false
   roles:

@@ -9,8 +9,8 @@
         name: cluster
       spec:
         defaultNodeSelector: "{{ infranodes_worker_label }}"
-    tags:
-      - infranodes
-      - infranodes.ocp
-      - infranodes.scheduler
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.scheduler
 ...

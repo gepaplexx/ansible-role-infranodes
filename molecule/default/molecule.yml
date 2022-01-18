@@ -16,9 +16,11 @@ provisioner:
     hosts:
       all:
         hosts:
-          infranodes-controlplane: {}
+          instance:
+            kubeconfig: "/root/config"
+            openshift_kubeconfig_file: "/root/config"
           localhost:
-            kubeconfig: ${MOLECULE_EPHEMERAL_DIRECTORY}/kubeconfig
+            kubeconfig: "${MOLECULE_EPHEMERAL_DIRECTORY}/kubeconfig"
 verifier:
   name: ansible
 ...

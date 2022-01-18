@@ -1,8 +1,4 @@
 ---
-- name: install pip requirements
-  ansible.builtin.pip:
-    name: openshift
-
 - name: apply labels to nodes
   include_tasks: label.yml
 

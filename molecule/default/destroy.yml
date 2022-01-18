@@ -6,6 +6,11 @@
   collections:
     - community.kubernetes
   tasks:
+    - name: Destroy instance
+      ansible.builtin.command:
+        cmd: docker rm --force instance
+      changed_when: false
+
     - name: Destroy test kind cluster
       ansible.builtin.command:
         cmd: kind delete cluster --name infranodes-test --kubeconfig  {{ kubeconfig }}  # yamllint disable-line rule:line-length
