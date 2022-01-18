@@ -152,10 +152,10 @@
             - key: infra
               value: reserved
               effect: NoExecute
-    tags:
-      - infranodes
-      - infranodes.ocp
-      - infranodes.monitoring
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.monitoring
 
 - name: "Annotate openshift-logging correctly"
   environment:
