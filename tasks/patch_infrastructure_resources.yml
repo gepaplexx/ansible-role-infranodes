@@ -10,6 +10,7 @@
         name: default
         namespace: openshift-ingress-operator
       spec:
+        replicas: "{{ int(ocp_infra_count) }}"
         nodePlacement:
           nodeSelector:
             matchLabels:
