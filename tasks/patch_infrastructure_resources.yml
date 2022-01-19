@@ -172,5 +172,34 @@
     - infranodes.logging
     - molecule-notest
 
+- name: "Patch openshift-gitops instance"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: patched
+    definition:
+      apiVersion: argoproj.io/v1alpha1
+      kind: ArgoCD
+      metadata:
+        name: gp-infrastructure-argo
+        namespace: openshift-gitops
+      spec:
+        affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - podAffinityTerm:
+                  namespaces:
+                    - openshift-gitops
+                  topologyKey: kubernetes.io/hostname
+                weight: 100
+        nodeSelector:
+          node-role.kubernetes.io/infra: ""
+        tolerations:
+          - effect: NoSchedule
+            key: infra
+            value: reserved
+          - effect: NoExecute
+            key: infra
+            value: reserved
+
   # TODO: patch openshift-gitops | write molecule tests | authentication server
 ...
