@@ -201,5 +201,58 @@
             key: infra
             value: reserved
 
+- name: "Patch OpenShift Pipelines"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: patched
+    definition:
+      apiVersion: pipelines.openshift.io/v1alpha1
+      kind: GitopsService
+      metadata:
+        name: cluster
+      spec:
+        runOnInfra: true
+        tolerations:
+          - effect: NoSchedule
+            key: infra
+            value: reserved
+          - effect: NoExecute
+            key: infra
+            value: reserved
+
+- name: "Patch OpenShift ClusterLogging"
+  kubernetes.core.k8s:
+    kubeconfig: "{{ openshift_kubeconfig_file }}"
+    state: patched
+    definition:
+      apiVersion: logging.openshift.io/v1
+      kind: ClusterLogging
+      metadata:
+        name: instance
+      spec:
+        logStore:
+          elasticsearch:
+            nodeCount: 3
+            nodeSelector:
+              node-role.kubernetes.io/infra: ''
+            tolerations:
+              - effect: NoSchedule
+                key: infra
+                value: reserved
+              - effect: NoExecute
+                key: infra
+                value: reserved
+        visualization:
+          kibana:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ''
+            tolerations:
+              - effect: NoSchedule
+                key: infra
+                value: reserved
+              - effect: NoExecute
+                key: infra
+                value: reserved
+
   # TODO: patch openshift-gitops | write molecule tests | authentication server
 ...
