@@ -10,7 +10,8 @@
         name: default
         namespace: openshift-ingress-operator
       spec:
-        replicas: "{{ ocp_infra_count | int }}"
+        replicas: |
+          {{ ocp_infra_count }}
         nodePlacement:
           nodeSelector:
             matchLabels:
@@ -232,7 +233,6 @@
       spec:
         logStore:
           elasticsearch:
-            nodeCount: 3
             nodeSelector:
               node-role.kubernetes.io/infra: ''
             tolerations:
