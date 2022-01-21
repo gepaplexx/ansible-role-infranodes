@@ -230,6 +230,7 @@
       kind: ClusterLogging
       metadata:
         name: instance
+        namespace: openshift-logging
       spec:
         logStore:
           elasticsearch:
@@ -253,6 +254,6 @@
               - effect: NoExecute
                 key: infra
                 value: reserved
-
-  # TODO: patch openshift-gitops | write molecule tests | authentication server
+  failed_when: false  # operator might not be installed and there are
+                      # no instances that can/need to be moved to infra-nodes
 ...
