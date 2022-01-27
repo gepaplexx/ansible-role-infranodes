@@ -51,6 +51,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: true
           FILTER_REGEX_EXCLUDE: '.*.md'
           VALIDATE_KUBERNETES_KUBEVAL: false
+          VALIDATE_YAML: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   yaml-linter:
