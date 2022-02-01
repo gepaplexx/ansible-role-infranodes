@@ -1,6 +1,6 @@
 ---
-infranodes_label: node-role.kubernetes.io/infra=""
-infranodes_app_label: oc label node <node-name> node-role.kubernetes.io/app=""
+infranodes_label: node-role.kubernetes.io/infra=''
+infranodes_app_label: node-role.kubernetes.io/app=''
 infranodes_worker_label: node-role.kubernetes.io/worker
 infranodes_taint: "infra=reserved:NoSchedule infra=reserved:NoExecute"
 infranodes_label_selector: "node-role.kubernetes.io/infra"
