@@ -26,8 +26,8 @@
       # yamllint disable-line rule:line-length
       - kubectl label nodes $(kubectl get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{\'\n\'}{end}'| grep worker) "${LABEL}"
   register: infranodes_app
-  changed_when: '"already has a value" not in infranodes_app.stdout'
-  failed_when: '"error" in infranodes_app.stdout'
+  changed_when: "'already has a value' not in infranodes_app.stdout"
+  failed_when: "'error' in infranodes_app.stdout"
 
 - name: taint infrastructure nodes
   ansible.builtin.command:
@@ -37,7 +37,7 @@
       - TAINT={{ infranodes_taint|quote }}
       - kubectl taint nodes -l "${SELECTOR}" "${TAINT}"
   register: infranodes_taintoutput
-  changed_when: '"--overwrite is false" not in infranodes_taintoutput.stdout'
+  changed_when: "'--overwrite is false' not in infranodes_taintoutput.stdout"
   failed_when: false
   tags:
     - infranodes
