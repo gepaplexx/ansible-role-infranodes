@@ -4,7 +4,7 @@
   environment:
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
     LABEL: "{{ infranodes_label }}"
-  ansible.builtin.shell:
+  ansible.builtin.command:
     cmd:
       # yamllint disable-line rule:line-length
       kubectl label nodes $(kubectl get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'| grep infra) "${LABEL}"
@@ -17,23 +17,25 @@
     - infranodes.label
 
 - name: add app role label to worker nodes
-  environment:
-    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
-    LABEL: "{{ infranodes_app_label }}"
-  ansible.builtin.shell:
-    # yamllint disable-line rule:line-length
-    cmd: kubectl label nodes $(kubectl get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{\'\n\'}{end}'| grep worker) "${LABEL}"
+  ansible.builtin.command:
+    argsv:
+      - KUBECONFIG={{ openshift_kubeconfig_file|quote }}
+      - LABEL={{ infranodes_app_label|quote }}
+      - echo "KUBECONFIG: $KUBECONFIG"
+      - echo "LABEL: $LABEL"
+      # yamllint disable-line rule:line-length
+      - kubectl label nodes $(kubectl get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{\'\n\'}{end}'| grep worker) "${LABEL}"
   register: infranodes_app
   changed_when: '"already has a value" not in infranodes_app.stdout'
   failed_when: '"error" in infranodes_app.stdout'
 
 - name: taint infrastructure nodes
-  environment:
-    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
-    SELECTOR: "{{ infranodes_label_selector }}"
-    TAINT: "{{ infranodes_taint }}"
-  ansible.builtin.shell:
-    cmd: kubectl taint nodes -l "${SELECTOR}" "${TAINT}"
+  ansible.builtin.command:
+    argsv:
+      - KUBECONFIG={{ openshift_kubeconfig_file|quote }}
+      - SELECTOR={{ infranodes_label_selector|quote }}
+      - TAINT={{ infranodes_taint|quote }}
+      - kubectl taint nodes -l "${SELECTOR}" "${TAINT}"
   register: infranodes_taintoutput
   changed_when: '"--overwrite is false" not in infranodes_taintoutput.stdout'
   failed_when: false
