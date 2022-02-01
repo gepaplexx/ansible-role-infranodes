@@ -3,11 +3,11 @@
 - name: add infrastructure role label to infra nodes
   environment:
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
-    LABEL: "{{ infranodes_label }}"
+    LABEL: "{{ infranodes_label|quote }}"
   ansible.builtin.shell:
     cmd:
       # yamllint disable-line rule:line-length
-      kubectl label nodes $(kubectl get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'| grep infra) "${LABEL}"
+      kubectl label nodes $(kubectl get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'| grep infra) ${LABEL}=""
   register: infranodes_labeloutput
   changed_when: '"already has a value" not in infranodes_labeloutput.stdout'
   failed_when: '"error" in infranodes_labeloutput.stdout'
@@ -22,7 +22,7 @@
     LABEL: "{{ infranodes_app_label }}"
   ansible.builtin.shell:
     # yamllint disable-line rule:line-length
-    cmd: kubectl label nodes $(kubectl get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{\'\n\'}{end}'| grep worker) "${LABEL}"
+    cmd: kubectl label nodes $(kubectl get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{\'\n\'}{end}'| grep worker) "${LABEL}"=""
   register: infranodes_app
   changed_when: '"already has a value" not in infranodes_app.stdout'
   failed_when: '"error" in infranodes_app.stdout'
