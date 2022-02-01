@@ -23,7 +23,7 @@
             - effect: NoExecute
               key: infra
               value: reserved
-  when: 'infranodes_move_router|bool|default(false)'
+  when: 'infranodes_move_router|default(false)|bool'
   tags:
     - infranodes
     - infranodes.ocp
