@@ -2,7 +2,7 @@
 - name: "create infrastructure MachineConfigPool"
   kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
-    state: patched
+    state: present
     definition:
       apiVersion: machineconfiguration.openshift.io/v1
       kind: MachineConfigPool
@@ -28,7 +28,7 @@
 - name: "create infrastructure machine config"
   kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
-    state: patched
+    state: present
     definition:
       apiVersion: machineconfiguration.openshift.io/v1
       kind: MachineConfig

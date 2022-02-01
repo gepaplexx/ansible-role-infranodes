@@ -182,7 +182,7 @@
       apiVersion: argoproj.io/v1alpha1
       kind: ArgoCD
       metadata:
-        name: gp-infrastructure-argo
+        name: openshift-gitops
         namespace: openshift-gitops
       spec:
         affinity:
