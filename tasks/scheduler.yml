@@ -8,7 +8,7 @@
       metadata:
         name: cluster
       spec:
-        defaultNodeSelector: "{{ infranodes_worker_label }}"
+        defaultNodeSelector: "{{ infranodes_default_nodeselector }}"
   tags:
     - infranodes
     - infranodes.ocp
