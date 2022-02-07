@@ -160,12 +160,16 @@
     - infranodes.ocp
     - infranodes.monitoring
 
-- name: "Annotate openshift-logging correctly"
+- name: "Annotate namespaces with daemonsets correctly"
   environment:
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.command:
-    cmd: "kubectl annotate ns openshift-logging openshift.io/node-selector="
+    # yamllint disable-line rule:line-length
+    cmd: "kubectl annotate ns {{ infranodes_namespace }} openshift.io/node-selector="
   register: infranodes_annotate
+  loop: "{{ infranodes_daemonset_namespaces }}"
+  loop_control:
+    loop_var: infranodes_namespace
   changed_when: '"openshift-logging annotated" in infranodes_annotate.stdout'
   failed_when: '"error" in infranodes_annotate.stdout'
   tags:
