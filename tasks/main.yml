@@ -5,11 +5,12 @@
 - name: apply labels to nodes
   include_tasks: label.yml
 
-- name: create MachineConfigPool & MachineConfig
-  include_tasks: machineconfigs.yml
-  tags:
-    - infranodes
-    - infranodes.ocp
+#  Most likely not needed
+# - name: create MachineConfigPool & MachineConfig
+#   include_tasks: machineconfigs.yml
+#   tags:
+#     - infranodes
+#     - infranodes.ocp
 
 - name: define defaultNodeSelector
   include_tasks: scheduler.yml
