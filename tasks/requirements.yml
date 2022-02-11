@@ -14,4 +14,9 @@
   ansible.builtin.pip:
     name:
       - openshift
+
+- name: create kubectl alias
+  ansible.builtin.command:
+    cmd: alias kubectl='kubectl --insecure-skip-tls-verify'
+  changed_when: false
 ...
