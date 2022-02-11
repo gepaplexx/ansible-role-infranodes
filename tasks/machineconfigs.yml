@@ -2,6 +2,7 @@
 - name: "create infrastructure MachineConfigPool"
   kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    validate_certs: false
     state: present
     definition:
       apiVersion: machineconfiguration.openshift.io/v1
@@ -28,6 +29,7 @@
 - name: "create infrastructure machine config"
   kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    validate_certs: false
     state: present
     definition:
       apiVersion: machineconfiguration.openshift.io/v1

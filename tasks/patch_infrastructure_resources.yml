@@ -2,6 +2,7 @@
 - name: "Patch default IngressController"
   kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    validate_certs: false
     state: patched
     definition:
       apiVersion: operator.openshift.io/v1
@@ -33,6 +34,7 @@
 - name: "Patch ImageRegistry"
   kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    validate_certs: false
     state: patched
     definition:
       apiVersion: imageregistry.operator.openshift.io/v1
@@ -84,6 +86,7 @@
 - name: "Patch openshift-gitops instance"
   kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    validate_certs: false
     state: patched
     definition:
       apiVersion: argoproj.io/v1alpha1
@@ -113,6 +116,7 @@
 - name: "Patch OpenShift Pipelines"
   kubernetes.core.k8s:
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    validate_certs: false
     state: patched
     definition:
       apiVersion: pipelines.openshift.io/v1alpha1
