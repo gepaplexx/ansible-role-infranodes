@@ -68,7 +68,7 @@
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.command:
     # yamllint disable-line rule:line-length
-    cmd: "kubectl annotate ns {{ infranodes_namespace }} openshift.io/node-selector="
+    cmd: "kubectl --insecure-skip-tls-verify annotate ns {{ infranodes_namespace }} openshift.io/node-selector="
   register: infranodes_annotate
   loop: "{{ infranodes_daemonset_namespaces }}"
   loop_control:
