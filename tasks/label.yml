@@ -26,22 +26,4 @@
   register: infranodes_app
   changed_when: '"already has a value" not in infranodes_app.stdout'
   failed_when: '"error" in infranodes_app.stdout'
-
-- name: "Annotate namespaces with daemonsets correctly"
-  environment:
-    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
-  ansible.builtin.command:
-    # yamllint disable-line rule:line-length
-    cmd: "kubectl --insecure-skip-tls-verify annotate ns {{ infranodes_namespace }} openshift.io/node-selector="
-  register: infranodes_annotate
-  loop: "{{ infranodes_daemonset_namespaces }}"
-  loop_control:
-    loop_var: infranodes_namespace
-  changed_when: '"openshift-logging annotated" in infranodes_annotate.stdout'
-  failed_when: '"error" in infranodes_annotate.stdout'
-  tags:
-    - infranodes
-    - infranodes.ocp
-    - infranodes.logging
-    - molecule-notest
 ...
