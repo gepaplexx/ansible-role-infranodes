@@ -10,4 +10,11 @@
   tags:
     - infranodes
     - infranodes.ocp
+
+- name: apply configuration changes
+  include_tasks: apply_configuration.yaml
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.configuration
 ...

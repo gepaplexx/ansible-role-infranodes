@@ -5,4 +5,25 @@ infranodes_default_nodeselector: 'node-role.kubernetes.io/app='
 infranodes_worker_label: 'node-role.kubernetes.io/worker'
 infranodes_taint: 'infra=reserved:NoSchedule infra=reserved:NoExecute'
 infranodes_label_selector: "node-role.kubernetes.io/infra"
+
+
+infranodes_bundle_packages:
+  - name: infranodes-config
+    enabled: true
+    chart_ref: gepaplexx/gp-bke-argocd-application
+    repoURL: "https://github.com/gepaplexx/gp-helm-chart-development/"
+    namespace: openshift-gitops
+    wait: true
+    parameters:
+      argocd:
+        application:
+          name: "infranodes"
+          source:
+            repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+            chart: gp-infranodes
+            targetRevision: "*"
+          syncPolicy:
+            automated:
+              prune: true
+              selfHeal: true
 ...
