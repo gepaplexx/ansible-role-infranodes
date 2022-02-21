@@ -12,7 +12,7 @@
     - infranodes.ocp
 
 - name: apply configuration changes
-  include_tasks: apply_configuration.yaml
+  include_tasks: apply_configuration.yml
   tags:
     - infranodes
     - infranodes.ocp
