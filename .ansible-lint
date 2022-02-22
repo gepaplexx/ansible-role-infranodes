@@ -12,6 +12,8 @@ exclude_paths:
 # parseable: true
 # verbosity: 1
 quiet: true
+line-length:
+  max: 180
 
 # Mock modules or roles in order to pass ansible-playbook --syntax-check
 # mock_modules:
@@ -56,18 +58,18 @@ enable_list:
 #   - skip_this_tag
 #   - git-latest
 #   - experimental  # experimental is included in the implicit list
-#   # - role-name
+#   - role-name
 
 # Offline mode disables installation of requirements.yml
 # offline: false
 
 # Define required Ansible's variables to satisfy syntax check
 extra_vars:
-  # foo: bar
-  # multiline_string_variable: |
-  #   line1
-  #   line2
-  # complex_variable: ":{;\t$()"
+# foo: bar
+# multiline_string_variable: |
+#   line1
+#   line2
+# complex_variable: ":{;\t$()"
 
 # Uncomment to enforce action validation with tasks, usually is not
 # needed as Ansible syntax check also covers it.
@@ -76,9 +78,9 @@ extra_vars:
 # List of additional kind:pattern to be added at the top of the default
 # match list, first match determines the file kind.
 # kinds:
-  # - playbook: "**/examples/*.{yml,yaml}"
-  # - galaxy: "**/folder/galaxy.yml"
-  # - tasks: "**/tasks/*.yml"
-  # - vars: "**/vars/*.yml"
-  # - meta: "**/meta/main.yml"
+# - playbook: "**/examples/*.{yml,yaml}"
+# - galaxy: "**/folder/galaxy.yml"
+# - tasks: "**/tasks/*.yml"
+# - vars: "**/vars/*.yml"
+# - meta: "**/meta/main.yml"
 ...

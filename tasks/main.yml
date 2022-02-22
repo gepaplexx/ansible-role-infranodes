@@ -17,4 +17,11 @@
     - infranodes
     - infranodes.ocp
     - infranodes.configuration
+
+- name: move workload to infranodes
+  include_tasks: move_workload.yml
+  tags:
+    - infranodes
+    - infranodes.ocp
+    - infranodes.workload
 ...

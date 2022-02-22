@@ -6,7 +6,6 @@ infranodes_worker_label: 'node-role.kubernetes.io/worker'
 infranodes_taint: 'infra=reserved:NoSchedule infra=reserved:NoExecute'
 infranodes_label_selector: "node-role.kubernetes.io/infra"
 
-
 infranodes_bundle_packages:
   - name: infranodes-config
     enabled: true

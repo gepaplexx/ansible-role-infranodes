@@ -1,0 +1,45 @@
+---
+# disable-rule:line-length
+- name: restart openshift-gitops rollout
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+  ansible.builtin.shell:
+    cmd: |
+      kubectl --insecure-skip-tls-verify --kubeconfig "${KUBECONFIG}" rollout restart  deployment -n openshift-gitops
+  changed_when: true
+
+- name: restart openshift-image-registry-deployment
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+  ansible.builtin.shell:
+    cmd: |
+      kubectl --insecure-skip-tls-verify --kubeconfig "${KUBECONFIG} rollout restart deployment image-registry -n openshift-image-registry
+  changed_when: true
+
+- name: restart rook-ceph deployments
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+  ansible.builtin.shell:
+    cmd: |
+      DEPLOYMENTS=$(kubectl get deploy -n rook-ceph -l rook_cluster=rook-ceph --no-headers --insecure-skip-tls-verify | cut -d " " -f1)
+      kubectl --insecure-skip-tls-verify --kubeconfig "${KUBECONFIG} rollout restart deployment "${DEPLOYMENTS}" -n rook-ceph
+  changed_when: true
+
+- name: restart monitoring deployments
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+  ansible.builtin.shell:
+    cmd: |
+      DEPLOYMENTS=$(kubectl get deploy -n openshift-monitoring -l app.kubernetes.io/part-of=openshift-monitoring --no-headers --insecure-skip-tls-verify | cut -d " " -f1)
+      kubectl --insecure-skip-tls-verify --kubeconfig "${KUBECONFIG} rollout restart deployment "${DEPLOYMENTS}" -n openshift-monitoring
+  changed_when: true
+
+- name: restart velero deployments
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+  ansible.builtin.shell:
+    cmd: |
+      kubectl --insecure-skip-tls-verify --kubeconfig "${KUBECONFIG} rollout restart deployment velero-gp-velero -n velero
+  changed_when: true
+
+...

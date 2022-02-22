@@ -1,3 +1,4 @@
+---
 - name: Add Helm Repositories
   with_items: "{{ infranodes_bundle_repositories }}"
   kubernetes.core.helm_repository:
