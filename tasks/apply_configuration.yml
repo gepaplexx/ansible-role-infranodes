@@ -14,3 +14,4 @@
     release_state: "{{ item.state | default('present') }}"
     wait: "{{ item.wait | default(false) }}"
     kubeconfig: "{{ openshift_kubeconfig_file }}"
+    validate_certs: false
