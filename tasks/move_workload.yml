@@ -13,7 +13,7 @@
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.shell:
     cmd: |
-      kubectl --kubeconfig "${KUBECONFIG} rollout restart deployment image-registry -n openshift-image-registry
+      kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment image-registry -n openshift-image-registry
   changed_when: true
 
 - name: restart rook-ceph deployments
@@ -21,8 +21,8 @@
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.shell:
     cmd: |
-      DEPLOYMENTS=$(kubectl get deploy -n rook-ceph -l rook_cluster=rook-ceph --no-headers | cut -d " " -f1)
-      kubectl --kubeconfig "${KUBECONFIG} rollout restart deployment "${DEPLOYMENTS}" -n rook-ceph
+      DEPLOYMENTS=$(kubectl get deploy -n rook-ceph -l rook_cluster=rook-ceph --no-headers --kubeconfig "${KUBECONFIG}" | cut -d " " -f1)
+      kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment "${DEPLOYMENTS}" -n rook-ceph
   changed_when: true
 
 - name: restart monitoring deployments
@@ -30,8 +30,8 @@
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.shell:
     cmd: |
-      DEPLOYMENTS=$(kubectl get deploy -n openshift-monitoring -l app.kubernetes.io/part-of=openshift-monitoring --no-headers | cut -d " " -f1)
-      kubectl --kubeconfig "${KUBECONFIG} rollout restart deployment "${DEPLOYMENTS}" -n openshift-monitoring
+      DEPLOYMENTS=$(kubectl get deploy -n openshift-monitoring -l app.kubernetes.io/part-of=openshift-monitoring --no-headers --kubeconfig "${KUBECONFIG}" | cut -d " " -f1)
+      kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment "${DEPLOYMENTS}" -n openshift-monitoring
   changed_when: true
 
 - name: restart velero deployments
@@ -39,7 +39,7 @@
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.shell:
     cmd: |
-      kubectl --kubeconfig "${KUBECONFIG} rollout restart deployment velero-gp-velero -n velero
+      kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment velero-gp-velero -n velero
   changed_when: true
 
 ...
