@@ -11,7 +11,7 @@ infranodes_bundle_packages:
     enabled: true
     chart_ref: gepaplexx/gp-bke-argocd-application
     repoURL: "https://github.com/gepaplexx/gp-helm-chart-development/"
-    namespace: openshift-gitops
+    namespace: gp-infrastructure
     wait: true
     parameters:
       argocd:
