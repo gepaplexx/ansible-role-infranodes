@@ -22,7 +22,9 @@
   ansible.builtin.shell:
     cmd: |
       DEPLOYMENTS=$(kubectl get deploy -n rook-ceph -l rook_cluster=rook-ceph --no-headers --kubeconfig "${KUBECONFIG}" | cut -d " " -f1)
-      kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment "${DEPLOYMENTS}" -n rook-ceph
+      for DEPLOY in $DEPLOYMENTS; do
+        kubectl  --kubeconfig "${KUBECONFIG}" rollout restart deployment $DEPLOY -n rook-ceph
+      done
   changed_when: true
 
 - name: restart monitoring deployments
