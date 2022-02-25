@@ -33,7 +33,9 @@
   ansible.builtin.shell:
     cmd: |
       DEPLOYMENTS=$(kubectl get deploy -n openshift-monitoring -l app.kubernetes.io/part-of=openshift-monitoring --no-headers --kubeconfig "${KUBECONFIG}" | cut -d " " -f1)
-      kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment "${DEPLOYMENTS}" -n openshift-monitoring
+      for DEPLOY in $DEPLOYMENTS; do
+        kubectl  --kubeconfig "${KUBECONFIG}" rollout restart deployment $DEPLOY -n openshift-monitoring
+      done
   changed_when: true
 
 - name: restart velero deployments
