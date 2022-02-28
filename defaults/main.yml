@@ -25,4 +25,26 @@ infranodes_bundle_packages:
             automated:
               prune: true
               selfHeal: true
+  - name: openshift-monitoring
+    enabled: true
+    chart_ref: gepaplexx/gp-bke-argocd-application
+    repoURL: "https://github.com/gepaplexx/gp-helm-chart-development/"
+    namespace: openshift-gitops
+    wait: true
+    parameters:
+      argocd:
+        application:
+          name: "cluster-monitoring"
+          source:
+            repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+            chart: gp-cluster-monitoring-config
+            targetRevision: "*"
+            helm:
+              parameters:
+                - name: "infranodes.enabled"
+                  value: "true"
+          syncPolicy:
+            automated:
+              prune: true
+              selfHeal: true
 ...
