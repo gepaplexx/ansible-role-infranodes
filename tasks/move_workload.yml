@@ -43,7 +43,7 @@
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.shell:
     cmd: |
-      kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment velero-gp-velero -n velero
+      kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment -l component=velero -n velero
   changed_when: true
 
 ...
