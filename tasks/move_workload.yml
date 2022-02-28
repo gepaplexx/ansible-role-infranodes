@@ -23,7 +23,7 @@
     cmd: |
       DEPLOYMENTS=$(kubectl get deploy -n rook-ceph -l rook_cluster=rook-ceph --no-headers --kubeconfig "${KUBECONFIG}" | cut -d " " -f1)
       for DEPLOY in $DEPLOYMENTS; do
-        kubectl  --kubeconfig "${KUBECONFIG}" rollout restart deployment $DEPLOY -n rook-ceph
+        kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment $DEPLOY -n rook-ceph
       done
   changed_when: true
 
@@ -34,7 +34,7 @@
     cmd: |
       DEPLOYMENTS=$(kubectl get deploy -n openshift-monitoring -l app.kubernetes.io/part-of=openshift-monitoring --no-headers --kubeconfig "${KUBECONFIG}" | cut -d " " -f1)
       for DEPLOY in $DEPLOYMENTS; do
-        kubectl  --kubeconfig "${KUBECONFIG}" rollout restart deployment $DEPLOY -n openshift-monitoring
+        kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment $DEPLOY -n openshift-monitoring
       done
   changed_when: true
 
@@ -43,7 +43,10 @@
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.shell:
     cmd: |
-      kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment -l component=velero -n velero
+      DEPLOYMENTS=$(kubectl -n velero get deployment -l component=velero --no-headers --kubeconfig "${KUBECONFIG}" | cut -d " " -f1)
+      for DEPLOY in $DEPLOYMENTS; do
+        kubectl --kubeconfig "${KUBECONFIG}" rollout restart deployment $DEPLOY -n velero
+      done
   changed_when: true
 
 ...
