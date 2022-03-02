@@ -26,4 +26,13 @@
   register: infranodes_app
   changed_when: '"already has a value" not in infranodes_app.stdout'
   failed_when: '"error" in infranodes_app.stdout'
+
+- name: annotate namespaces initially
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+  ansible.builtin.shell:
+    # yamllint disable-line rule:line-length
+    cmd: kubectl --kubeconfig ${KUBECONFIG} annotate project {{ item }} openshift.io/node-selector='' --overwrite
+    loop: "{{ infranodes_namespaces }}"
+  changed_when: true
 ...
