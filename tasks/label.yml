@@ -33,6 +33,6 @@
   ansible.builtin.shell:
     # yamllint disable-line rule:line-length
     cmd: kubectl --kubeconfig ${KUBECONFIG} annotate project {{ item }} openshift.io/node-selector='' --overwrite
-    loop: "{{ infranodes_namespaces }}"
+  loop: "{{ infranodes_namespaces }}"
   changed_when: true
 ...
