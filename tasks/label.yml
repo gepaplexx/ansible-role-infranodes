@@ -35,4 +35,5 @@
     cmd: kubectl --kubeconfig ${KUBECONFIG} annotate project {{ item }} openshift.io/node-selector='' --overwrite
   loop: "{{ infranodes_namespaces }}"
   changed_when: true
+  ignore_errors: true   # some namespaces might not exist due to not all "add-ons" are configured in the cluster
 ...
