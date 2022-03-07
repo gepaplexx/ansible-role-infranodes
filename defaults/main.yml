@@ -11,6 +11,7 @@ infranodes_namespaces:
   - openshift-monitoring
   - openshift-logging
   - rook-ceph
+  - openshift-tracing
 
 infranodes_bundle_packages:
   - name: infranodes-config
