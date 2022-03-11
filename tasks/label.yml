@@ -32,8 +32,22 @@
     KUBECONFIG: "{{ openshift_kubeconfig_file }}"
   ansible.builtin.shell:
     # yamllint disable-line rule:line-length
-    cmd: kubectl --kubeconfig ${KUBECONFIG} annotate project {{ item }} openshift.io/node-selector='' --overwrite
+    cmd: kubectl annotate project {{ item }} openshift.io/node-selector='' --overwrite --kubeconfig ${KUBECONFIG}
   loop: "{{ infranodes_namespaces }}"
   changed_when: true
-  ignore_errors: true   # some namespaces might not exist due to not all "add-ons" are configured in the cluster
+  failed_when: false    # some namespaces might not exist due to not all "add-ons" are configured in the cluster
+
+- name: add required labels for PodTopologySpreads to Nodes
+  environment:
+    KUBECONFIG: "{{ openshift_kubeconfig_file }}"
+  ansible.builtin.shell:
+    # yamllint disable-line rule:line-length
+    cmd: |
+      NODES=$(kubectl get nodes --no-headers | cut -d " " -f1)
+      for NODE in $NODES; do
+        kubectl label node $NODE topology.kubernetes.io/zone=datacenter-1 --kubeconfig ${KUBECONFIG}
+        kubectl label node $NODE kubernetes.io/hostname=$NODE --kubeconfig ${KUBECONFIG}
+      done
+  changed_when: true
+  failed_when: false    # labels already applied
 ...
