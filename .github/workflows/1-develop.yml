@@ -24,7 +24,7 @@ jobs:
         run: pip3 install ansible-lint
 
       - name: Lint Code Base with ansible-lint
-        uses: ansible/ansible-lint-action@master
+        uses: ansible/ansible-lint-action@main
         with:
           targets: "../"
           override-deps: ansible-lint==5.3.2
