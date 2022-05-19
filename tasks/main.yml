@@ -10,25 +10,4 @@
   tags:
     - infranodes
     - infranodes.ocp
-
-- name: apply configuration changes
-  include_tasks: apply_configuration.yml
-  tags:
-    - infranodes
-    - infranodes.ocp
-    - infranodes.configuration
-
-- name: evict user-workload pods from infranodes
-  include_tasks: eviction.yml
-  tags:
-    - infranodes
-    - infranodes.ocp
-    - infranodes.workload
-
-- name: move workload to infranodes
-  include_tasks: move_workload.yml
-  tags:
-    - infranodes
-    - infranodes.ocp
-    - infranodes.workload
 ...
